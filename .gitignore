@@ -21,3 +21,17 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+
+# --------------install-------------- #
+# npm install react-router-dom@6
+# npm install -D tailwindcss >>> npx tailwindcss init >>> npm i daisyui
+
+
+
+
+
+
+
+
+# after setup
