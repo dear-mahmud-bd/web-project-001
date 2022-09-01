@@ -5,7 +5,7 @@ import PrimaryBtn from '../../Shared/PrimaryBtn';
 
 const HomeAppointment = () => {
     return (
-        <div
+        <div className='mb-24'
             style={{
                 background: `url(${appointment})`
             }}
