@@ -1,48 +1,66 @@
 import React from 'react';
-import { useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
-import auth from '../../../firebase.init';
+import { useCreateUserWithEmailAndPassword, useUpdateProfile } from 'react-firebase-hooks/auth';
 import { useForm } from "react-hook-form";
-import Loading from '../../Shared/Loading';
 import { Link } from 'react-router-dom';
+import auth from '../../../firebase.init';
 import GoogleLogIn from '../../Shared/GoogleLogIn';
+import Loading from '../../Shared/Loading';
 
-const LogIn = () => {
-    const { register, formState: { errors }, handleSubmit } = useForm();
-
-    const onSubmit = (data) => {
-        // console.log(data);
-        signInWithEmailAndPassword(data.email, data.password);
-    };
-
+const Register = () => {
     let errorElement;
     const [
-        signInWithEmailAndPassword,
+        createUserWithEmailAndPassword,
         user,
         loading,
         error,
-    ] = useSignInWithEmailAndPassword(auth);
+    ] = useCreateUserWithEmailAndPassword(auth);
 
-    if(user){
+    const [updateProfile, updating, uError] = useUpdateProfile(auth);
+
+    const { register, formState: { errors }, handleSubmit } = useForm();
+    const onSubmit = async (data) => {
+        // console.log(data);
+        await createUserWithEmailAndPassword(data.email, data.password);
+        await updateProfile({ displayName: data.name })
+    };
+
+    if (user) {
         // console.log(user);
     }
-    if (loading) {
-        return <Loading className='h-[80vh]'/>;
+    if (loading || updating) {
+        return <Loading />;
     }
-    if (error) {
-        if (error.message === 'Firebase: Error (auth/user-not-found).') {
-            errorElement = <p className='font-bold text-center text-red-500'>User not found</p>;
-        } else {
-            errorElement = <p className='font-bold text-center text-red-500'>Password din't match</p>;
-        }
+    if (error || uError) {
+        errorElement = <p className='font-bold text-center text-red-500'>{error?.message || uError?.message}</p>;
     }
 
     return (
         <div className='h-[80vh] flex justify-center items-center'>
             <div className="card w-[75%] sm:w-[70%] md:w-[65%] lg:w-[50%] bg-base-200 shadow-xl">
                 <div className="p-5 text-center">
-                    <h2 className="text-3xl font-bold ">Welcome Back</h2>
+                    <h2 className="text-3xl font-bold ">Register Now</h2>
                     <form onSubmit={handleSubmit(onSubmit)} >
 
+                        <div className="form-control w-full max-w-xs mx-auto">
+                            <label className="label">
+                                <span className="label-text">Your Name</span>
+                            </label>
+                            <input type="text" placeholder="Your Name" className="input input-bordered w-full max-w-xs"
+                                {...register("name", {
+                                    required: {
+                                        value: true,
+                                        message: 'Name is required'
+                                    },
+                                    minLength: {
+                                        value: 3,
+                                        message: 'Must be 3 charecter or longer'
+                                    }
+                                })} />
+                            <label className="label">
+                                {errors.name?.type === 'required' && <span className="label-text-alt text-red-500">{errors.name.message}</span>}
+                                {errors.name?.type === 'minLength' && <span className="label-text-alt text-red-500">{errors.name.message}</span>}
+                            </label>
+                        </div>
                         <div className="form-control w-full max-w-xs mx-auto">
                             <label className="label">
                                 <span className="label-text">Your Email</span>
@@ -84,9 +102,9 @@ const LogIn = () => {
                             </label>
                         </div>
                         {errorElement}
-                        <input type="submit" value="LogIn" className="btn btn-wide btn-success" />
+                        <input type="submit" value="Register" className="btn btn-wide btn-success" />
                     </form>
-                    <p className='pt-4'>New to Doctors Portal? <Link to='/register' className='text-secondary'>Create Account</Link></p>
+                    <p className='pt-4'>Already have an account ? <Link to='/login' className='text-secondary'>LigIn Account</Link> </p>
                     <div className="divider">or continue via</div>
                     <GoogleLogIn />
                 </div>
@@ -95,4 +113,4 @@ const LogIn = () => {
     );
 };
 
-export default LogIn;
+export default Register;

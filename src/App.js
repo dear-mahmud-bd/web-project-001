@@ -7,6 +7,7 @@ import Appointment from './components/Pages/Appointment/Appointment';
 import Reviews from './components/Pages/Reviews/Reviews';
 import ContactUs from './components/Pages/ContactUs/ContactUs';
 import LogIn from './components/Pages/LogIn/LogIn';
+import Register from './components/Pages/Register/Register';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         <Route path="/appointment" element={<Appointment />} />
         <Route path="/reviews" element={<Reviews />} />
         <Route path="/contactus" element={<ContactUs />} />
+        <Route path="/register" element={<Register />} />
         <Route path="/login" element={<LogIn />} />
       </Routes>
     </div>
