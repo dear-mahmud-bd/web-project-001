@@ -1,15 +1,24 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useSignInWithGoogle } from 'react-firebase-hooks/auth';
+import { useLocation, useNavigate } from 'react-router-dom';
 import auth from '../../firebase.init';
 import Loading from './Loading';
 
 const GoogleLogIn = () => {
+    const navigate = useNavigate();
+    const location = useLocation();
+    let from = location.state?.from?.pathname || "/";
+
     let gErrorElement;
     const [signInWithGoogle, gUser, gLoading, gError] = useSignInWithGoogle(auth);
 
-    if (gUser) {
-        // console.log(gUser);
-    }
+    // solve the warning issue by using useEffect ...
+    useEffect(() => {
+        if (gUser) {
+            return navigate(from, { replace: true });
+        }
+    }, [gUser, from, navigate])
+
     if (gLoading) {
         return <Loading />;
     }

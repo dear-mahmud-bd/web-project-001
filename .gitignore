@@ -27,6 +27,7 @@ yarn-error.log*
 # npm install react-router-dom@6
 # npm install -D tailwindcss >>> npx tailwindcss init >>> npm i daisyui
 # npm install react-day-picker date-fns
+# npm i react-toastify
 
 
 

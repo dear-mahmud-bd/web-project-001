@@ -14,6 +14,7 @@ const AvailableAppointment = ({ date }) => {
             .then(res => res.json())
             .then(data => setServices(data))
     }, [])
+    
     return (
         <section className='px-12'>
             <div className='text-center text-2xl'>

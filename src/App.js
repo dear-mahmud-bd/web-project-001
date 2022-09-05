@@ -8,22 +8,30 @@ import Reviews from './components/Pages/Reviews/Reviews';
 import ContactUs from './components/Pages/ContactUs/ContactUs';
 import LogIn from './components/Pages/LogIn/LogIn';
 import Register from './components/Pages/Register/Register';
+import RequireAuth from './components/RequireAuth/RequireAuth';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   return (
-    <div>
+    <main>
       <Navbar />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/home" element={<Home />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/appointment" element={<Appointment />} />
-        <Route path="/reviews" element={<Reviews />} />
-        <Route path="/contactus" element={<ContactUs />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/login" element={<LogIn />} />
-      </Routes>
-    </div>
+      <section>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/home" element={<Home />} />
+          <Route path="/about" element={<About />} />
+
+          <Route path="/appointment" element={<RequireAuth><Appointment /></RequireAuth>} />
+
+          <Route path="/reviews" element={<Reviews />} />
+          <Route path="/contactus" element={<ContactUs />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/login" element={<LogIn />} />
+        </Routes>
+      </section>
+      <ToastContainer position="top-center"></ToastContainer>
+    </main>
   );
 }
 

@@ -1,12 +1,16 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useCreateUserWithEmailAndPassword, useUpdateProfile } from 'react-firebase-hooks/auth';
 import { useForm } from "react-hook-form";
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import auth from '../../../firebase.init';
 import GoogleLogIn from '../../Shared/GoogleLogIn';
 import Loading from '../../Shared/Loading';
 
 const Register = () => {
+    const navigate = useNavigate();
+    const location = useLocation();
+    let from = location.state?.from?.pathname || "/";
+
     let errorElement;
     const [
         createUserWithEmailAndPassword,
@@ -24,9 +28,13 @@ const Register = () => {
         await updateProfile({ displayName: data.name })
     };
 
-    if (user) {
-        // console.log(user);
-    }
+    // solve the warning issue by using useEffect ...
+    useEffect(() => {
+        if (user) {
+            return navigate(from, { replace: true });
+        }
+    }, [user, from, navigate])
+
     if (loading || updating) {
         return <Loading />;
     }
