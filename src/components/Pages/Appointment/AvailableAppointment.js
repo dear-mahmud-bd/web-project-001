@@ -1,19 +1,29 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { format } from 'date-fns';
+import { useQuery } from 'react-query';
 import AppointmentService from './AppointmentService';
 import BookingModal from './BookingModal';
+import Loading from '../../Shared/Loading';
 
 const AvailableAppointment = ({ date }) => {
-    const [services, setServices] = useState([]);
+    // const [services, setServices] = useState([]);
     const [treatment, setTreatment] = useState(null);
 
     const formattedDate = format(date, 'PP');
 
-    useEffect(() => {
+    const { isLoading, refetch, data: services } = useQuery(['available', formattedDate], () =>
         fetch(`http://localhost:5000/available?date=${formattedDate}`)
             .then(res => res.json())
-            .then(data => setServices(data))
-    }, [formattedDate])
+    )
+    if (isLoading) {
+        return <Loading />;
+    }
+
+    // useEffect(() => {
+    // fetch(`http://localhost:5000/available?date=${formattedDate}`)
+    //     .then(res => res.json())
+    //         .then(data => setServices(data))
+    // }, [formattedDate])
 
     return (
         <section className='px-12'>
@@ -22,9 +32,9 @@ const AvailableAppointment = ({ date }) => {
                 <h1 className=''>Please select a service</h1>
             </div>
             <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 text-center'>
-                {services.map(service => <AppointmentService key={service._id} service={service} setTreatment={setTreatment} />)}
+                {services?.map(service => <AppointmentService key={service._id} service={service} setTreatment={setTreatment} />)}
             </div>
-            {treatment && <BookingModal key='123' treatment={treatment} date={date} setTreatment={setTreatment}></BookingModal>}
+            {treatment && <BookingModal refetch={refetch} treatment={treatment} date={date} setTreatment={setTreatment}></BookingModal>}
         </section>
     );
 };
