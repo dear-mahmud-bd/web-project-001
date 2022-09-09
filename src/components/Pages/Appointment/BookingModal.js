@@ -30,7 +30,6 @@ const BookingModal = ({ date, treatment, setTreatment, refetch }) => {
             patientName: user.displayName,
             phone
         }
-        console.log(booking);
 
         fetch('http://localhost:5000/booking', {
             method: 'POST',

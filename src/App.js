@@ -11,10 +11,13 @@ import Register from './components/Pages/Register/Register';
 import RequireAuth from './components/RequireAuth/RequireAuth';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Dashboard from './components/Pages/Dashboard/Dashboard';
+import MyAppoitments from './components/Pages/Dashboard/MyAppoitments';
+import MyReview from './components/Pages/Dashboard/MyReview';
 
 function App() {
   return (
-    <main>
+    <main className='max-w-7xl mx-auto'>
       <Navbar />
       <section>
         <Routes>
@@ -23,6 +26,10 @@ function App() {
           <Route path="/about" element={<About />} />
 
           <Route path="/appointment" element={<RequireAuth><Appointment /></RequireAuth>} />
+          <Route path="/dashboard" element={<RequireAuth><Dashboard /></RequireAuth>} >
+            <Route index element={<MyAppoitments />} />
+            <Route path="review" element={<MyReview />} />
+          </Route>
 
           <Route path="/reviews" element={<Reviews />} />
           <Route path="/contactus" element={<ContactUs />} />
