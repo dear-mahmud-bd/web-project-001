@@ -5,8 +5,13 @@ import UserRow from './UserRow';
 
 const Users = () => {
 
-    const { isLoading, refetch, data: users } = useQuery('available', () =>
-        fetch(`http://localhost:5000/user`)
+    const { isLoading, refetch, data: users } = useQuery('users', () =>
+        fetch(`http://localhost:5000/user`, {
+            method: 'GET',
+            headers: {
+                'authorization': `Bearer ${localStorage.getItem('accessToken')}`
+            }
+        })
             .then(res => res.json())
     )
     if (isLoading) {
