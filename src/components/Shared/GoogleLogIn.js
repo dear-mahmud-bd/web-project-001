@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useSignInWithGoogle } from 'react-firebase-hooks/auth';
 import { useLocation, useNavigate } from 'react-router-dom';
 import auth from '../../firebase.init';
+import useToken from '../../hooks/useToken';
 import Loading from './Loading';
 
 const GoogleLogIn = () => {
@@ -11,13 +12,14 @@ const GoogleLogIn = () => {
 
     let gErrorElement;
     const [signInWithGoogle, gUser, gLoading, gError] = useSignInWithGoogle(auth);
+    const [token] = useToken(gUser);
 
     // solve the warning issue by using useEffect ...
     useEffect(() => {
-        if (gUser) {
+        if (token) {
             return navigate(from, { replace: true });
         }
-    }, [gUser, from, navigate])
+    }, [token, from, navigate])
 
     if (gLoading) {
         return <Loading />;

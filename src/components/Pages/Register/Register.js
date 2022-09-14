@@ -3,6 +3,7 @@ import { useCreateUserWithEmailAndPassword, useUpdateProfile } from 'react-fireb
 import { useForm } from "react-hook-form";
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import auth from '../../../firebase.init';
+import useToken from '../../../hooks/useToken';
 import GoogleLogIn from '../../Shared/GoogleLogIn';
 import Loading from '../../Shared/Loading';
 
@@ -20,6 +21,7 @@ const Register = () => {
     ] = useCreateUserWithEmailAndPassword(auth);
 
     const [updateProfile, updating, uError] = useUpdateProfile(auth);
+    const [token] = useToken(user);
 
     const { register, formState: { errors }, handleSubmit } = useForm();
     const onSubmit = async (data) => {
@@ -30,10 +32,11 @@ const Register = () => {
 
     // solve the warning issue by using useEffect ...
     useEffect(() => {
-        if (user) {
+        if (token) {
             return navigate(from, { replace: true });
         }
-    }, [user, from, navigate])
+    }, [token, from, navigate])
+
 
     if (loading || updating) {
         return <Loading />;

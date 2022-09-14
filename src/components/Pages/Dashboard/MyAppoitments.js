@@ -1,8 +1,11 @@
+import { signOut } from 'firebase/auth';
 import React, { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
+import { useNavigate } from 'react-router-dom';
 import auth from '../../../firebase.init';
 
 const MyAppoitments = () => {
+    const navigate = useNavigate();
     const [appointments, setAppointments] = useState([]);
     const [user, loading] = useAuthState(auth);
 
@@ -12,15 +15,31 @@ const MyAppoitments = () => {
 
     useEffect(() => {
         if (user) {
-            fetch(`http://localhost:5000/booking?patient=${user.email}`)
-                .then(res => res.json())
-                .then(data => setAppointments(data));
+            fetch(`http://localhost:5000/booking?patient=${user.email}`, {
+                method: 'GET',
+                headers: {
+                    'authorization': `Bearer ${localStorage.getItem('accessToken')}`
+                }
+            })
+                .then(res => {
+                    console.log('Response', res)
+                    if (res.status === 401 || res.status === 403) {
+                        signOut(auth);
+                        localStorage.removeItem('accessToken');
+                        navigate('/home');
+                    }
+                    return res.json()
+                })
+                .then(data => {
+                    console.log(data)
+                    setAppointments(data)
+                });
         }
-    }, [user])
+    }, [user, navigate])
 
     return (
         <div className='px-2'>
-            <h2>My Appointments: {appointments.length}</h2>
+            <h2>My Appointments: {appointments?.length}</h2>
             <div className="overflow-x-auto">
                 <table className="table w-full">
                     <thead>
@@ -34,7 +53,7 @@ const MyAppoitments = () => {
                     </thead>
                     <tbody>
                         {
-                            appointments.map((a, index) =>
+                            appointments?.map((a, index) =>
                                 <tr key={index}>
                                     <th>{index + 1}</th>
                                     <td>{a.patientName}</td>

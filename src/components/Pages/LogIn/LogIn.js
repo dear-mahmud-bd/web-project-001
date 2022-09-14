@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import Loading from '../../Shared/Loading';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import GoogleLogIn from '../../Shared/GoogleLogIn';
+import useToken from '../../../hooks/useToken';
 
 const LogIn = () => {
     const navigate = useNavigate();
@@ -24,13 +25,14 @@ const LogIn = () => {
         loading,
         error,
     ] = useSignInWithEmailAndPassword(auth);
+    const [token] = useToken(user);
 
     // solve the warning issue by using useEffect ...
     useEffect(() => {
-        if (user) {
+        if (token) {
             return navigate(from, { replace: true });
         }
-    }, [user, from, navigate])
+    }, [token, from, navigate])
 
     if (loading) {
         return <Loading className='h-[80vh]' />;
