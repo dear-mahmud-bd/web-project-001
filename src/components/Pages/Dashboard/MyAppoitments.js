@@ -3,15 +3,14 @@ import React, { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useNavigate } from 'react-router-dom';
 import auth from '../../../firebase.init';
+import Loading from '../../Shared/Loading';
 
 const MyAppoitments = () => {
     const navigate = useNavigate();
     const [appointments, setAppointments] = useState([]);
+    const [appointmentsLoading, setAppointmentsLoading] = useState(true);
     const [user, loading] = useAuthState(auth);
 
-    if (loading) {
-
-    }
 
     useEffect(() => {
         if (user) {
@@ -33,9 +32,14 @@ const MyAppoitments = () => {
                 .then(data => {
                     console.log(data)
                     setAppointments(data)
+                    setAppointmentsLoading(false)
                 });
         }
     }, [user, navigate])
+
+    if (loading || appointmentsLoading) {
+        return <Loading />
+    }
 
     return (
         <div className='px-2'>
