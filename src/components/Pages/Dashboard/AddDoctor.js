@@ -46,7 +46,7 @@ const AddDoctor = () => {
                         img: img,
                         deleteUrl: deleteImg
                     }
-                    console.log(doctor);
+                    // console.log(doctor);
 
                     // send data to database ...
                     fetch('http://localhost:5000/doctor', {

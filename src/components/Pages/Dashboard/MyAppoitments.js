@@ -21,7 +21,7 @@ const MyAppoitments = () => {
                 }
             })
                 .then(res => {
-                    console.log('Response', res)
+                    // console.log('Response', res);
                     if (res.status === 401 || res.status === 403) {
                         signOut(auth);
                         localStorage.removeItem('accessToken');
@@ -30,9 +30,9 @@ const MyAppoitments = () => {
                     return res.json()
                 })
                 .then(data => {
-                    console.log(data)
-                    setAppointments(data)
-                    setAppointmentsLoading(false)
+                    // console.log(data)
+                    setAppointments(data);
+                    setAppointmentsLoading(false);
                 });
         }
     }, [user, navigate])
