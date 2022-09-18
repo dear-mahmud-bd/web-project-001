@@ -31,7 +31,7 @@ const BookingModal = ({ date, treatment, setTreatment, refetch }) => {
             phone
         }
 
-        fetch('https://mighty-cove-59999.herokuapp.com/booking', {
+        fetch('http://localhost:5000/booking', {
             method: 'POST',
             headers: {
                 'content-type': 'application/json'
