@@ -13,7 +13,7 @@ const BookingModal = ({ date, treatment, setTreatment, refetch }) => {
         return <Loading />
     }
 
-    const { _id, name, slots } = treatment;
+    const { _id, name, slots, price } = treatment;
     const formattedDate = format(date, 'PP');
 
     const handleBooking = event => {
@@ -27,6 +27,7 @@ const BookingModal = ({ date, treatment, setTreatment, refetch }) => {
             date: formattedDate,
             patient: user.email,
             slot,
+            price,
             patientName: user.displayName,
             phone
         }
@@ -68,7 +69,7 @@ const BookingModal = ({ date, treatment, setTreatment, refetch }) => {
                         <input type="text" name="name" value={user?.displayName || ''} disabled className="input input-bordered w-full max-w-xs" />
                         <input type="email" name="email" value={user?.email || ''} disabled className="input input-bordered w-full max-w-xs" />
                         <input type="text" name="phone" placeholder="Phone Number" required className="input input-bordered w-full max-w-xs" />
-                        <input type="submit" value="Submit" className="btn btn-secondary w-full max-w-xs" />
+                        <input type="submit" value={`pay $${price} to confirm`} className="btn w-[70%] btn-primary text-white font-bold bg-gradient-to-r from-secondary to-primary" />
                     </form>
                 </div>
             </div>
