@@ -53,7 +53,7 @@ const MyAppoitments = () => {
                             <th>Date</th>
                             <th>Time</th>
                             <th>Treatment</th>
-                            <th>Payment</th>
+                            <th className='text-center'>Payment</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -66,8 +66,13 @@ const MyAppoitments = () => {
                                     <td>{a.slot}</td>
                                     <td>{a.treatment}</td>
                                     <td>
-                                        {(a.price && !a.paid) && <Link to={`/dashboard/payment/${a._id}`}><button className='btn btn-xs btn-success'>Pay</button></Link>}
-                                        {(a.price && a.paid) && <button className='btn btn-xs btn-success' disabled>already paid</button>}
+                                        {(a.price && !a.paid) && <Link to={`/dashboard/payment/${a._id}`}><div className='text-center'> 
+                                        <button className='btn btn-xs btn-success'>Pay</button>
+                                            </div></Link>}
+                                        {(a.price && a.paid) && <div className='text-center'>
+                                            <button className='btn btn-xs btn-success ' disabled>already paid</button>
+                                            <p className=' text-xs'>Tranjection ID : <span className='text-success'>{a.transactionId}</span></p>
+                                        </div>}
                                     </td>
                                 </tr>)
                         }

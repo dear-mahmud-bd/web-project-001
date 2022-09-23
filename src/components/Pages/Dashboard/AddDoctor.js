@@ -8,7 +8,7 @@ const AddDoctor = () => {
 
     const { register, formState: { errors }, handleSubmit, reset } = useForm();
     const { data: services, isLoading } = useQuery('services', () =>
-        fetch('http://localhost:5000/times')
+        fetch('https://mighty-cove-59999.herokuapp.com/times')
             .then(res => res.json())
     )
 
@@ -49,7 +49,7 @@ const AddDoctor = () => {
                     // console.log(doctor);
 
                     // send data to database ...
-                    fetch('http://localhost:5000/doctor', {
+                    fetch('https://mighty-cove-59999.herokuapp.com/doctor', {
                         method: 'POST',
                         headers: {
                             'content-type': 'application/json',

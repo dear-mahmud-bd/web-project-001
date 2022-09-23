@@ -1,11 +1,17 @@
+import { Elements } from '@stripe/react-stripe-js';
+import { loadStripe } from '@stripe/stripe-js';
 import React from 'react';
 import { useQuery } from 'react-query';
 import { useParams } from 'react-router-dom';
 import Loading from '../../Shared/Loading';
+import CheckoutForm from './CheckoutForm';
+
+
+const stripePromise = loadStripe('pk_test_51LkJnmSA8fzO0MAVGdhwlImQMoKjvQFrQIS4meg08en97NEoXab1Yh40Bz8gJYBpQFlxoUtJvwIVj5pPL2206XFC00BRmIETbc');
 
 const Payment = () => {
     const { appointmentId } = useParams();
-    const url = `http://localhost:5000/booking/${appointmentId}`;
+    const url = `https://mighty-cove-59999.herokuapp.com/booking/${appointmentId}`;
     const { data: appointment, isLoading } = useQuery(['booking', appointmentId], () => fetch(url, {
         method: 'GET',
         headers: {
@@ -28,9 +34,9 @@ const Payment = () => {
                 </div>
                 <div className="card flex-shrink-0 w-50 max-w-md shadow-2xl bg-base-100">
                     <div className="card-body">
-                        {/* <Elements stripe={stripePromise}>
-                        <CheckoutForm appointment={appointment} />
-                    </Elements> */}
+                        <Elements stripe={stripePromise}>
+                            <CheckoutForm appointment={appointment} />
+                        </Elements>
                     </div>
                 </div>
             </div>
